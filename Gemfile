@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem "sqlite3"
+
 gem "rake"
 gem "sinatra"
 gem "sinatra-activerecord"
@@ -15,6 +15,11 @@ gem "coffee-script"
 group :development, :test do
   gem 'rspec'
   gem 'pry'
+  gem 'sqlite3'
+end
+
+group :production do
+  gem 'pg'
 end
 
 gem 'thin'
