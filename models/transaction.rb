@@ -6,7 +6,11 @@ class Transaction < ActiveRecord::Base
   end
 
   def self.default_scope
-    where("date >= :last_fill", :last_fill => last_fill.date).order("date ASC")
+    if last_fill.nil?
+      order("date ASC")
+    else
+      where("date >= :last_fill", :last_fill => last_fill.date).order("date ASC")
+    end
   end
 
 end
