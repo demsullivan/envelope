@@ -1,0 +1,9 @@
+%table
+  %tr
+    %td Envelope Name
+    %td Balance
+  - @envelopes.each do |envelope|
+    %tr
+      %td= link envelope.name, "/envelope/#{envelope.id}"
+      %td= as_money envelope.balance
+    

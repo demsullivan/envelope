@@ -1,0 +1,18 @@
+= @envelope.name
+
+%table(cellpadding="10")
+  %tr
+    %td Date
+    %td Merchant
+    %td Category
+    %td Amount
+  - @envelope.transactions.each do |txn|
+    %tr
+      %td= txn.date
+      %td= txn.merchant
+      %td= txn.category
+      %td= as_money txn.amount
+  %tr
+    %td(colspan=3)
+      %b Envelope Balance
+    %td= as_money @envelope.balance
