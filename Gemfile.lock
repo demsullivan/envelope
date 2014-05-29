@@ -31,10 +31,7 @@ GEM
       tilt
     i18n (0.6.9)
     method_source (0.8.2)
-    mini_portile (0.6.0)
     multi_json (1.10.1)
-    nokogiri (1.6.2.1)
-      mini_portile (= 0.6.0)
     pry (0.9.12.6)
       coderay (~> 1.0)
       method_source (~> 0.8)
@@ -68,7 +65,6 @@ GEM
     thor (0.17.0)
     tilt (1.4.1)
     tzinfo (0.3.39)
-    wait (0.5.2)
 
 PLATFORMS
   ruby
@@ -78,7 +74,6 @@ DEPENDENCIES
   coffee-script
   foreman
   haml
-  nokogiri
   pry
   rake
   rspec
@@ -87,4 +82,3 @@ DEPENDENCIES
   sinatra-activerecord
   sqlite3
   thin
-  wait
