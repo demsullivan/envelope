@@ -14,8 +14,14 @@ class Envelope < ActiveRecord::Base
     grouped
   end
 
+  def fill(date)
+    date = date || Date.today
+    transactions.create :date => date, :amount => weekly_amount,
+                        :merchant => "Envelope refilled", :bank => "Fill"
+  end
+
   def update_balance
-    self.balance = transactions.unscoped.sum('amount')
+    self.balance = transactions.unscoped.where(:envelope_id => self.id).sum('amount')
   end
 
   def update_balance!

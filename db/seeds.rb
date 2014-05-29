@@ -20,8 +20,7 @@ end
 
 if Transaction.count == 0
   Envelope.all.each do |e|
-    Transaction.create :date => "2014/05/23", :amount => e.weekly_amount, :envelope => e,
-                       :merchant => "Enveloped refilled", :bank => "Fill"
+    e.fill "2014/05/23"
     e.update_balance!
   end
 end
