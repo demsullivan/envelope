@@ -15,7 +15,7 @@ class Envelope < ActiveRecord::Base
   end
 
   def update_balance
-    self.balance = transactions.sum('amount')
+    self.balance = transactions.unscoped.sum('amount')
   end
 
   def update_balance!
