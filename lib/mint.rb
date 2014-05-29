@@ -77,18 +77,6 @@ class Mint
 
   end
 
-  # Returns the Mint transactions CSV.
-  def csv
-    wait = Wait.new(
-      :attempts => 10,
-      :timeout  => 60,
-      :delay    => 5,
-      :rescue   => RestClient::ResourceNotFound
-    )
-
-    wait.until { RestClient.get(CSV_URL, :cookies => @cookies) }
-  end
-
   def transactions(args)
     args = {:startDate => "05/26/2014", :endDate => "05/28/2014",
       :filterType => "cash", :offset => 0, :comparableType => 0,

@@ -6,10 +6,7 @@ gem "sinatra"
 gem "sinatra-activerecord"
 gem "activerecord", "3.2.17"
 
-gem "nokogiri"
-
 gem "foreman"
-gem "wait"
 
 gem "haml"
 gem "sass"
