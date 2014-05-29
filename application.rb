@@ -19,6 +19,10 @@ class Website < Sinatra::Base
   set :app_file, __FILE__
   set :static, true
 
+  use Rack::Auth::Basic, "Envelope" do |user, pass|
+    user == 'admin' and pass == ENV['LOGIN_PASSWD']
+  end
+
   helpers do
     include Helpers
   end
@@ -36,7 +40,7 @@ class Website < Sinatra::Base
   end
 
   get '/' do
-    @envelopes = Envelope.all
+    @envelopes = Envelope.order('id ASC').all
     haml :home
   end
 
