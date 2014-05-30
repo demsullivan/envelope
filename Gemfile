@@ -5,7 +5,7 @@ gem "rake"
 gem "sinatra"
 gem "sinatra-activerecord"
 gem "activerecord", "3.2.17"
-
+gem "minty", :git => 'https://github.com/demsullivan/minty.git'
 gem "foreman"
 
 gem "haml"

@@ -20,23 +20,24 @@ task :mint_sync do
   txns = mint.transactions :startDate => last_fill_date, :endDate => last_fill_date+7
 
   txns.each do |txn|
-    if Envelope::REGULAR_EXPENSES.include? txn['category']
-      next
-    end
-
-    puts txn['date']
     envelope = envelopes[txn['category']].nil? ? other_envelope : envelopes[txn['category']]
 
     if not envelope.nil? and not txn['isPending']
       txn['date'] = Date.strptime txn['date'], "%b %d"
-      puts txn['date']
       amount = txn['isDebit'] ? txn['amount'].delete('$').to_f * -1 : txn['amount'].delete('$').to_f
       params = {:bank => txn['fi'], :account => txn['account'], :date => txn['date'],
         :category => txn['category'], :merchant => txn['merchant'], :amount => amount,
         :envelope => envelope, :mint_id => txn['id']}
 
       db_txn = Transaction.where(:mint_id => txn['id']).first
+
+      # create a new transaction if one doesn't exist
       Transaction.create(params) if db_txn.nil?
+
+      # delete the transaction if it exists and the category is now an ignored category
+      db_txn.delete if not db_txn.nil? and Envelope::REGULAR_EXPENSES.include? txn['category']
+
+      # otherwise, just update it
       db_txn.update_attributes(params) if not db_txn.nil?
 
     end
