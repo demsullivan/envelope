@@ -36,7 +36,7 @@ task :mint_sync do
 
       # delete the transaction if it exists and the category is now an ignored category
       if not db_txn.nil?
-        if Envelope.REGULAR_EXPENSES.include? txn['category']
+        if Envelope::REGULAR_EXPENSES.include? txn['category']
           db_txn.delete
         else
           db_txn.update_attributes(params)
