@@ -1,9 +1,13 @@
-%table
-  %tr
-    %td Envelope Name
-    %td Balance
-  - @envelopes.each do |envelope|
+= link "Force Refresh", "/?refresh=1"
+%table.table
+  %thead
     %tr
-      %td= link envelope.name, "/envelope/#{envelope.id}"
-      %td= as_money envelope.balance
+      %th Envelope Name
+      %th Balance
+  %tbody
+    - @envelopes.each do |envelope|
+      %tr
+        %td= link envelope.name, "/envelope/#{envelope.id}"
+        %td= as_money envelope.balance
+
     

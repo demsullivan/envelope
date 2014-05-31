@@ -1,42 +1,37 @@
 require 'sinatra/activerecord'
 require './models/envelope'
 require './models/transaction'
-require './lib/credentials'
-require './lib/mint'
+require 'minty'
 
 desc "Sync transaction data from Mint"
 task :mint_sync do
-  credentials = Credentials.new
-  credentials.validate!
+  mint = Minty::Client.new(Minty::Credentials.new)
 
-  mint = Mint.new credentials
-  mint.authenticate
 
   last_fill_date = Transaction.last_fill.date
   puts "grabbing transactions since #{last_fill_date}"
     
   envelopes = Envelope.grouped_by_category
-  other_envelope = Envelope.where(:name => "Unplanned")[0]
+  other_envelope = Envelope.where(:name => "Unplanned").first
   txns = mint.transactions :startDate => last_fill_date, :endDate => last_fill_date+7
 
   txns.each do |txn|
-    envelope = envelopes[txn['category']].nil? ? other_envelope : envelopes[txn['category']]
+    envelope = envelopes[txn.category].nil? ? other_envelope : envelopes[txn.category]
 
-    if not envelope.nil? and not txn['isPending']
-      txn['date'] = Date.strptime txn['date'], "%b %d"
-      amount = txn['isDebit'] ? txn['amount'].delete('$').to_f * -1 : txn['amount'].delete('$').to_f
-      params = {:bank => txn['fi'], :account => txn['account'], :date => txn['date'],
-        :category => txn['category'], :merchant => txn['merchant'], :amount => amount,
+    if not envelope.nil? and not txn.pending?
+      amount = txn.debit? ? txn.amount.delete('$').to_f * -1 : txn.amount.delete('$').to_f
+      params = {:bank => txn.bank, :account => txn.account, :date => txn.date,
+        :category => txn.category, :merchant => txn.description, :amount => amount,
         :envelope => envelope, :mint_id => txn['id']}
 
-      db_txn = Transaction.where(:mint_id => txn['id']).first
+      db_txn = Transaction.where(:mint_id => txn.id).first
 
       # create a new transaction if one doesn't exist
-      Transaction.create(params) if db_txn.nil? and not Envelope::REGULAR_EXPENSES.include? txn['category']
+      Transaction.create(params) if db_txn.nil? and not Envelope::REGULAR_EXPENSES.include? txn.category
 
       # delete the transaction if it exists and the category is now an ignored category
       if not db_txn.nil?
-        if Envelope::REGULAR_EXPENSES.include? txn['category']
+        if Envelope::REGULAR_EXPENSES.include? txn.category
           db_txn.delete
         else
           db_txn.update_attributes(params)

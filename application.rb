@@ -1,11 +1,11 @@
 require 'bundler/setup'
+Bundler.require :default
 require 'sinatra/base'
-require 'sinatra/activerecord'
 
 Dir[File.expand_path('./lib/*.rb')].each {|f| require f }
 Dir[File.expand_path('./models/*.rb')].each {|f| require f }
 
-# %w(models lib).each do |dir|
+# %w(lib models).each do |dir|
 #   Dir[File.expand_path('./#{dir}/*.rb')].each {|f| require f }
 # end
 
@@ -13,7 +13,8 @@ class Website < Sinatra::Base
   root_dir = File.dirname(__FILE__)
 
   register Sinatra::ActiveRecordExtension
-  
+  register Sinatra::Bootstrap::Assets
+
   set :environment, ENV['RACK_ENV'] || :development
   set :root, root_dir
   set :app_file, __FILE__
@@ -41,6 +42,11 @@ class Website < Sinatra::Base
 
   get '/' do
     @envelopes = Envelope.order('id ASC').all
+    if request['refresh']
+      load 'Rakefile'
+      Rake::Task["mint_refresh"].invoke
+      Rake::Task["mint_sync"].invoke
+    end
     haml :home
   end
 

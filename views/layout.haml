@@ -1,8 +1,12 @@
 %html
   %head
-    %meta{:content => "text/html; charset=utf-8", "http-equiv" => "content-type"}/
-    %title Placeholder
+    %meta{:content => "text/html; charset=utf-8", "http-equiv" => "content-type"}
+    %meta{:name => "viewport", :content => "width=device-width, initial-scale=1"}
+    %title Envelope Budgeting
     = css '/application.css'
+    = bootstrap_css false
+    = bootstrap_js_legacy
   %body
     = yield
     = js '/application.js'
+    = bootstrap_js_default
