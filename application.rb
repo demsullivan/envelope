@@ -44,7 +44,6 @@ class Website < Sinatra::Base
     @envelopes = Envelope.order('id ASC').all
     if request['refresh']
       load 'Rakefile'
-      Rake::Task["mint_refresh"].invoke
       Rake::Task["mint_sync"].invoke
     end
     haml :home

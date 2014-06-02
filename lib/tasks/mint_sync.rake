@@ -18,7 +18,7 @@ task :mint_sync do
   txns.each do |txn|
     envelope = envelopes[txn.category].nil? ? other_envelope : envelopes[txn.category]
 
-    if not envelope.nil? and not txn.pending?
+    if not envelope.nil? # and not txn.pending?
       amount = txn.debit? ? txn.amount.delete('$').to_f * -1 : txn.amount.delete('$').to_f
       params = {:bank => txn.bank, :account => txn.account, :date => txn.date,
         :category => txn.category, :merchant => txn.description, :amount => amount,
