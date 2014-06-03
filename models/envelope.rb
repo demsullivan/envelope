@@ -4,7 +4,8 @@ class Envelope < ActiveRecord::Base
   REGULAR_EXPENSES = ["Rent & Mortgage", "PC Mastercard", "CIBC VISA", "Auto Payment", "Loans",
                       "Credit Card Payment", "Internet", "Paycheque", "Transfer", "Movies & DVDs",
                       "Mobile Phone", "Auto Insurance", "Home Insurance", "Hide from Budgets & Trends",
-                      "Credit Card interest", "Finance Charge", "Business Services", "Interest Income"]
+                      "Credit Card interest", "Finance Charge", "Business Services", "Interest Income",
+                      "From Savings"]
 
   def self.grouped_by_category
     grouped = {}
