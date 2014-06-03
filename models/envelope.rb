@@ -5,7 +5,8 @@ class Envelope < ActiveRecord::Base
                       "Credit Card Payment", "Internet", "Paycheque", "Transfer", "Movies & DVDs",
                       "Mobile Phone", "Auto Insurance", "Home Insurance", "Hide from Budgets & Trends",
                       "Credit Card interest", "Finance Charge", "Business Services", "Interest Income",
-                      "From Savings"]
+                      "From Savings", "Server Hosting", "msVacation", "msEmergency", "msChristmas",
+                      "msDaveHobbies", "msCar", "msHousehold", "msEntertainment"]
 
   def self.grouped_by_category
     grouped = {}
