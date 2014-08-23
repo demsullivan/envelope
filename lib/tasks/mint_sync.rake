@@ -27,11 +27,11 @@ task :mint_sync do
       db_txn = Transaction.where(:mint_id => txn.id).first
 
       # create a new transaction if one doesn't exist
-      Transaction.create(params) if db_txn.nil? and not Envelope::REGULAR_EXPENSES.include? txn.category
+      Transaction.create(params) if db_txn.nil? and (Envelope::UNPLANNED_EXPENSES.include?(txn.category) or envelopes.keys.include?(txn.category))
 
       # delete the transaction if it exists and the category is now an ignored category
       if not db_txn.nil?
-        if Envelope::REGULAR_EXPENSES.include? txn.category
+        unless Envelope::UNPLANNED_EXPENSES.include?(txn.category) or envelopes.keys.include?(txn.category)
           db_txn.delete
         else
           db_txn.update_attributes(params)

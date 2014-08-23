@@ -6,7 +6,9 @@ class Envelope < ActiveRecord::Base
                       "Mobile Phone", "Auto Insurance", "Home Insurance", "Hide from Budgets & Trends",
                       "Credit Card interest", "Finance Charge", "Business Services", "Interest Income",
                       "From Savings", "Server Hosting", "msVacation", "msEmergency", "msChristmas",
-                      "msDaveHobbies", "msCar", "msHousehold", "msEntertainment"]
+                      "msDaveHobbies", "msCar", "msHousehold", "msEntertainment", "Music"]
+  UNPLANNED_EXPENSES = ["Pharmacy", "Shopping", "Not Sure", "Unplanned", "Coffee Shops", "Snacks and Drinks",
+                        "Alcohol & Bars"]
 
   def self.grouped_by_category
     grouped = {}
